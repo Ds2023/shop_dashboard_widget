@@ -8,14 +8,31 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: Arial, sans-serif; }
         #container { width: 100%; height: 100%; }
+        #error { color: red; padding: 16px; display: none; }
     </style>
 </head>
 <body>
     <div id="container">Loading shop analytics...</div>
+    <div id="error"></div>
 
     <script>
         ZOHO.embeddedApp.on("PageLoad", function (data) {
-            document.getElementById("container").innerHTML = "Data received: " + JSON.stringify(data);
+
+            const recordId = data.EntityId;
+
+            if (!recordId) {
+                document.getElementById("error").style.display = "block";
+                document.getElementById("error").innerHTML = "Error: Could not retrieve Account ID.";
+                document.getElementById("container").innerHTML = "";
+                return;
+            }
+
+            const baseUrl = "https://crmplus.zoho.com/reports/open-view/3019736000001587465";
+            const criteria = '"Shop Name"=\'' + recordId + '\'';
+            const fullUrl = baseUrl + "?ZOHO_CRITERIA=" + encodeURIComponent(criteria);
+
+            document.getElementById("container").innerHTML =
+                '<iframe frameborder="0" width="100%" height="600" src="' + fullUrl + '"></iframe>';
         });
 
         ZOHO.embeddedApp.init();
