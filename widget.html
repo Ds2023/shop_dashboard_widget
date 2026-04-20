@@ -27,16 +27,16 @@
 
                 const record = response.data[0];
                 const service = record.Service;
+                const accountName = record.Account_Name;
 
                 if (service === "Shops") {
                     const baseUrl = "https://crmplus.zoho.com/reports/open-view/3019736000001637549";
-                    const criteria = '"COCO/CODO Shop Checklist"."Shop Name"=\'' + recordId + '\'';
+                    const criteria = '"Accounts"."Account Name"=\'' + accountName + '\'';
                     const fullUrl = baseUrl + "?ZOHO_CRITERIA=" + encodeURIComponent(criteria);
 
                     document.getElementById("container").innerHTML =
-                        '<iframe frameborder="0" width="100%" height="600" src="' + fullUrl + '"></iframe>';
+                        '<iframe frameborder="0" width="100%" height="800" src="' + fullUrl + '"></iframe>';
                 } else {
-                    // Collapse everything so no blank space shows
                     document.body.style.height = "0";
                     document.body.style.overflow = "hidden";
                     document.documentElement.style.height = "0";
